@@ -15,14 +15,15 @@ frame_add_form.grid(column=0, row=0, sticky="ns")
 frame_statistic.grid(column=1, row=0)
 frame_list.grid(column=0, row=1, columnspan=2, sticky="we")
 
-items = [0, 1, 2, 3, 4]
+#items = [0, 1, 2, 3, 4]
 
 def form_submit():
     project=f_project.get()
-    dl=f_deadline.get()
+    dl=ph.get_string_timestamp(f_deadline.get())
     stff=f_staff.get()
     insert_ = (project, dl, stff)
     print(insert_)
+    print(ph.get_date(dl))
     print(type(project), type(dl), type(stff))
 
     #with sqlite3.connect('database.db') as db:
@@ -30,13 +31,13 @@ def form_submit():
         #query_worker = """ INSERT INTO """
 
 l_project = ttk.Label(frame_add_form, text="Выбор проекта")
-f_project = ttk.Combobox(frame_add_form, values=items)
+f_project = ttk.Combobox(frame_add_form, values=ph.get_combobox('project'))
 l_deadline = ttk.Label(frame_add_form, text="Deadline")
 f_deadline = DateEntry(frame_add_form, foreground='black', normalforeground='black',
                                         selectforeground='red', background='white',
                                         date_pattern='YYYY-mm-dd')
 l_staff = ttk.Label(frame_add_form, text="Назначить сотрудника ")
-f_staff = ttk.Entry(frame_add_form, justify=tk.RIGHT)
+f_staff = ttk.Combobox(frame_add_form, values=ph.get_combobox('worker'))
 btn_submit = ttk.Button(frame_add_form, text="Добавить", command=form_submit)
 
 l_project.grid(row=0, column=0, sticky='w', padx=10, pady=10)
