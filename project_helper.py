@@ -69,14 +69,7 @@ def get_table_data():
     data_staff=[]
     with sqlite3.connect('database.db') as db:
         cursor = db.cursor()
-        query = """ SELECT worker.worker_id, 
-                worker.name_worker, 
-                worker.post, 
-                project.name_project, 
-                department.name_department 
-                FROM worker JOIN project, department
-                WHERE project.project_id = worker.project_id 
-                AND department.department_id = worker.department_id"""
+        query = """ SELECT * FROM worker"""
         cursor.execute(query)
         records = cursor.fetchall()
 
@@ -89,8 +82,8 @@ def get_combobox(table):
     ls = []
     with sqlite3.connect('database.db') as db:
         cursor = db.cursor()
-        query_project_table = """ SELECT name_project FROM project """
-        query_worker_table = """ SELECT name_worker FROM worker """
+        query_project_table = """ SELECT name FROM project """
+        query_worker_table = """ SELECT name FROM worker """
         if table == 'project':
             cursor.execute(query_project_table)
         elif table == 'worker':
