@@ -4,24 +4,33 @@ import datetime
 with sqlite3.connect('database.db') as db:
     cursor = db.cursor()
 
-    query_tab1 = """ CREATE TABLE IF NOT EXISTS department(id INTEGER, name TEXT) """
+    query_tab_department = """ CREATE TABLE IF NOT EXISTS department(
+                department_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
+                name_department TEXT) """
 
-    query_tab2 = """ CREATE TABLE IF NOT EXISTS worker(id INTEGER, 
-                                                       name TEXT, 
-                                                       id_department INTEGER,
-                                                       post TEXT,
-                                                       id_project INTEGER) """
+    query_tab_worker = """ CREATE TABLE IF NOT EXISTS worker(
+                worker_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
+                name_worker TEXT, 
+                department_id INTEGER NOT NULL,
+                post TEXT,
+                project_id INTEGER NOT NULL,
+                FOREIGN KEY (department_id) REFERENCES department (department_id),
+                FOREIGN KEY (project_id) REFERENCES project (project_id))"""
 
-    query_tab3 = """ CREATE TABLE IF NOT EXISTS project(id INTEGER, name TEXT) """
+    query_tab_project = """ CREATE TABLE IF NOT EXISTS project(
+                project_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                name_project TEXT) """
 
-    query_tab4 = """ CREATE TABLE IF NOT EXISTS deadlines(id INTEGER,
-                                                          deadlines_date INTEGER, 
-                                                          id_project INTEGER) """
+    query_tab_deadlines = """ CREATE TABLE IF NOT EXISTS deadlines(
+                deadlines_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+                deadlines_date INTEGER, 
+                project_id INTEGER NOT NULL,
+                FOREIGN KEY (project_id) REFERENCES project (project_id)) """
 
-    cursor.execute(query_tab1)
-    cursor.execute(query_tab2)
-    cursor.execute(query_tab3)
-    cursor.execute(query_tab4)
+    cursor.execute(query_tab_department)
+    cursor.execute(query_tab_worker)
+    cursor.execute(query_tab_project)
+    cursor.execute(query_tab_deadlines)
 
     db.commit()
 
@@ -70,18 +79,19 @@ insert_project = [
 with sqlite3.connect('database.db') as db:
     cursor = db.cursor()
 
-    query_deadlines = """ INSERT INTO deadlines(id, deadlines_date, id_project)
+    query_deadlines = """ INSERT INTO deadlines(deadlines_id, deadlines_date, project_id)
         VALUES(?, ?, ?);"""
 
-    query_department = """ INSERT INTO department(id, name)
+    query_department = """ INSERT INTO department(department_id, name_department)
         VALUES(?, ?); """
 
-    query_worker = """ INSERT INTO worker(id, name, 
-                                          id_department,
-                                          post,id_project)
+    query_worker = """ INSERT INTO worker(worker_id, name_worker, 
+                                          department_id,
+                                          post,
+                                          project_id)
         VALUES(?, ?, ?, ?, ?); """
 
-    query_project = """ INSERT INTO project(id, name)
+    query_project = """ INSERT INTO project(project_id, name_project)
         VALUES(?, ?); """
 
 

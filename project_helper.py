@@ -8,6 +8,10 @@ def get_timestamp(y, m, d):
 def get_date(tmstmp):
     return datetime.datetime.fromtimestamp(tmstmp).date()
 
+def get_string_timestamp(s):
+    t = s.split('-')
+    return get_timestamp(int(t[0]), int(t[1]), int(t[2]))
+
 
 def get_staff_inf():
     worker = []
@@ -65,7 +69,14 @@ def get_table_data():
     data_staff=[]
     with sqlite3.connect('database.db') as db:
         cursor = db.cursor()
-        query = """ SELECT * FROM worker"""
+        query = """ SELECT worker.worker_id, 
+                worker.name_worker, 
+                worker.post, 
+                project.name_project, 
+                department.name_department 
+                FROM worker JOIN project, department
+                WHERE project.project_id = worker.project_id 
+                AND department.department_id = worker.department_id"""
         cursor.execute(query)
         records = cursor.fetchall()
 
@@ -74,4 +85,22 @@ def get_table_data():
         return data_staff
         cursor.close()
 
+def get_combobox(table):
+    ls = []
+    with sqlite3.connect('database.db') as db:
+        cursor = db.cursor()
+        query_project_table = """ SELECT name_project FROM project """
+        query_worker_table = """ SELECT name_worker FROM worker """
+        if table == 'project':
+            cursor.execute(query_project_table)
+        elif table == 'worker':
+            cursor.execute(query_worker_table)
+        else:
+            return print('Ошибка ! Такой таблицы в базе данных не существует')
+
+        ls=list(cursor)
+        return ls
+        cursor.close()
+
+#get_combobox('project')
 
