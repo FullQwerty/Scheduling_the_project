@@ -59,7 +59,7 @@ class AddForm(tk.Frame):
         if count==1:
             mb.askyesno(
                 title='Информация о БД',
-                message='Получены ноыые данные о проектах, внести их?'
+                message='Получены новые данные о проектах, внести их?'
             )
             print('В базу данных внесены поправки: ', insert_, '\n',
                                                     ph.get_date(dl), '\n', type(project), type(dl), type(stff))
