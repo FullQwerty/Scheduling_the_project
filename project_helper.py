@@ -89,13 +89,8 @@ def get_combobox(table):
     ls = []
     with sqlite3.connect('database.db') as db:
         cursor = db.cursor()
-<<<<<<< HEAD
         query_project_table = """ SELECT name_project FROM project """
         query_worker_table = """ SELECT name_worker FROM worker """
-=======
-        query_project_table = """ SELECT name FROM project """
-        query_worker_table = """ SELECT name FROM worker """
->>>>>>> 0376744a8e1b25c4e74967847fc08863d0b3ec72
         if table == 'project':
             cursor.execute(query_project_table)
         elif table == 'worker':
@@ -107,5 +102,4 @@ def get_combobox(table):
         return ls
         cursor.close()
 
-#get_combobox('project')
 
